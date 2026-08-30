@@ -866,8 +866,9 @@ class _Broker:
         # If equity is negative, set all to 0 and stop the simulation
         if equity <= 0:
             assert self.margin_available <= 0
-            for trade in self.trades:
+            for trade in list(self.trades):
                 self._close_trade(trade, self.last_price, i)
+            self.orders.clear()
             self._cash = 0
             self._equity[i:] = 0
             raise _OutOfMoneyError
